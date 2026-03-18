@@ -36,6 +36,7 @@ export default defineConfig({
     trace: 'on',          // record trace for ALL tests
     video: 'on',          // record video for ALL tests
     screenshot: 'on',     // optional (captures screenshots)
+    slowMo: 100,          // slow down actions so you can watch the flow
     headless: false,
   },
 
