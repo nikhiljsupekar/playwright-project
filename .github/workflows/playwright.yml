@@ -34,3 +34,28 @@ jobs:
           name: allure-report
           path: allure-report/
           retention-days: 30
+
+      - name: Zip reports for email attachment
+        run: |
+          zip -r report-archive.zip allure-report playwright-report
+
+      - name: Send email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Playwright + Allure report: ${{ job.status }}"
+          to: team@example.com
+          from: ci@example.com
+          content_type: text/html
+          body: |
+            <p>✅ Playwright + Allure job completed: <strong>${{ job.status }}</strong>.</p>
+            <p>Run: <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">${{ github.run_id }}</a></p>
+            <ul>
+              <li>Playwright: <em>playwright-report</em></li>
+              <li>Allure: <em>allure-report</em></li>
+            </ul>
+          attachments: report-archive.zip
