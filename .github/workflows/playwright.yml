@@ -17,10 +17,18 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: xvfb-run --auto-servernum -- npx playwright test
+        run: xvfb-run --auto-servernum -- npx playwright test --reporter=allure-playwright
+      - name: Generate Allure report
+        run: npx allure generate allure-results --clean --output allure-report
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: allure-report
+          path: allure-report/
           retention-days: 30
