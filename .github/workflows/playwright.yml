@@ -19,7 +19,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: xvfb-run --auto-servernum -- npx playwright test --reporter=allure-playwright
+        run: xvfb-run --auto-servernum -- npx playwright test --reporter=html --reporter=allure-playwright
       - name: Generate Allure report
         run: npx allure generate allure-results --clean --output allure-report
       - uses: actions/upload-artifact@v4
